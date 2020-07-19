@@ -12,10 +12,8 @@ connection = pymysql.connect(host='localhost', user=username, password='', db='C
 try:
     # Run a query
     with connection.cursor() as cursor:
-        cursor.execute(""" CREATE TABLE IF NOT EXISTS
-                        Friends(name char(20), age int, DOB datetime);""")
-        # Note that the above will still display a warning (not an error) if the
-        # table already exists
+        rows = cursor.executemany("delete from Friends where name = %s;", ['Bob', 'Jim'])
+        connection.commit()
 finally:
     # Close the connection, regardless of whether the above was successful
     connection.close()
